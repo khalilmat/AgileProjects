@@ -21,6 +21,7 @@ import  org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
 import io.agileintelligence.ppmtool.domain.Project;
+import io.agileintelligence.ppmtool.services.MapValidationErrorService;
 import io.agileintelligence.ppmtool.services.ProjectService;
 
 @RestController
@@ -29,6 +30,8 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private MapValidationErrorService mapValidationErrorService;
     //The ? indicates a generic type
     //@Valid annotation ensures the validation of the whole object
     //BindingResult: Serves as result holder for a DataBinder
@@ -36,18 +39,8 @@ public class ProjectController {
     @PostMapping("")
     public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
         
-        if(result.hasErrors()) {
-
-            Map<String, String> errorMap = new HashMap<>();
-            //Filter to return only the field (variable) and the errormessage out of the JSON response (Must return 3 entries: description, projectName, projectIdentifier)
-            for(FieldError error: result.getFieldErrors()){
-                errorMap.put(error.getField(), error.getDefaultMessage());
-            }
-
-            return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.BAD_REQUEST);
-        }
-
-
+        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+        if(errorMap!=null) return errorMap;
 
         Project project1 = projectService.saveOrUpdateProject(project);
         return new ResponseEntity<Project>(project1, HttpStatus.CREATED);
