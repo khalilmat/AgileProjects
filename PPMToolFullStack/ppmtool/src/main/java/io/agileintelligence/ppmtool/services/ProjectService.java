@@ -44,4 +44,21 @@ public class ProjectService {
 
     }
 
+    /* create a method to delete a project by passing the projectid to 
+       the findAllProjects methods defined above to find it then
+       error handle it if the project id does not exist then
+       delete project contents if it exists. Next we need to 
+       create a handler in the project controller with an address to find it and 
+       delete it by passing project id info*/
+
+    public void deleteProjectByIdentifier(String projectId) {
+        Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
+
+        if (project == null) {
+            throw new ProjectIdException("Cannot delete Project with ID '"+projectId+"'. This project does not exist");
+        }
+
+        projectRepository.delete(project);
+    }
+
 }
