@@ -34,4 +34,14 @@ public class ProjectService {
         return project;
     }
 
+    /*This wires the findsAllProjects from the repository layer
+      It returns findAll of type ProjectRepository 
+      After this something has to be setup in the project controller
+      to get the route setup to find all proejcts*/
+      
+    public Iterable<Project> findAllProjects(){
+        return projectRepository.findAll();
+
+    }
+
 }
