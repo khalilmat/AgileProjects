@@ -13,10 +13,18 @@ class AddProject extends Component {
       description: "",
       start_date: "",
       end_date: "",
+      errors: {},
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  //life Cycle hooks: Used to set up props with new errors if error state changes
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
   }
 
   onChange(e) {
@@ -37,6 +45,9 @@ class AddProject extends Component {
   }
 
   render() {
+    //destructure errors
+    const { errors } = this.state;
+
     return (
       <div>
         {
@@ -66,6 +77,7 @@ class AddProject extends Component {
                       value={this.state.projectName}
                       onChange={this.onChange}
                     />
+                    <p>{errors.projectName}</p>
                   </div>
                   <div className="form-group">
                     <input
@@ -76,6 +88,7 @@ class AddProject extends Component {
                       value={this.state.projectIdentifier}
                       onChange={this.onChange}
                     />
+                    <p>{errors.projectIdentifier}</p>
                   </div>
 
                   <div className="form-group">
@@ -86,6 +99,7 @@ class AddProject extends Component {
                       value={this.state.description}
                       onChange={this.onChange}
                     />
+                    <p>{errors.description}</p>
                   </div>
                   <h6>Start Date</h6>
                   <div className="form-group">
@@ -122,8 +136,17 @@ class AddProject extends Component {
   }
 }
 
+//Add createProject and errors to propTypes and make them required
 AddProject.propTypes = {
   createProject: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired,
 };
 
-export default connect(null, { createProject })(AddProject);
+//create new constant to map state to props an extract errors
+const mapStateToProps = (state) => ({
+  errors: state.errors,
+});
+
+//Don't forget to map state to props when connecting to the app
+//if you leave out mapStateToProps no erros will be displayed
+export default connect(mapStateToProps, { createProject })(AddProject);
