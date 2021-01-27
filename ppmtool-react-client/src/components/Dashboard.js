@@ -1,25 +1,46 @@
-import React, { Component } from 'react'
-import CreateProjectButton from './project/CreateProjectButton';
-import ProjectItem from './project/ProjectItem';
- class Dashboard extends Component {
-    render() {
-        return (
-            <div className="projects">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-12">
-                            <h1 className="display-4 text-center">Projects</h1>
-                            <br />
-                            <CreateProjectButton />
-                            <br />
-                            <hr />
-                            <ProjectItem />
-                        </div>
-                    </div>
-                </div>
+import React, { Component } from "react";
+import CreateProjectButton from "./project/CreateProjectButton";
+import ProjectItem from "./project/ProjectItem";
+import { connect } from "react-redux";
+import { getProjects } from "../actions/projectActions";
+import PropTypes from "prop-types";
+
+class Dashboard extends Component {
+  //mount get projects when we load the component
+  componentDidMount() {
+    this.props.getProjects();
+  }
+
+  render() {
+    return (
+      <div className="projects">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-12">
+              <h1 className="display-4 text-center">Projects</h1>
+              <br />
+              <CreateProjectButton />
+              <br />
+              <hr />
+              <ProjectItem />
             </div>
-        );
-    }
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
-export default Dashboard;
+//wire project to Dashbaord
+Dashboard.prototypes = {
+  project: PropTypes.object.isRequired,
+  getProjects: PropTypes.func.isRequired,
+};
+
+//map state to props to wire project
+const mapStateToProps = (state) => ({
+  project: state.project,
+});
+
+//get Projects when loading Dashboard
+export default connect(mapStateToProps, { getProjects })(Dashboard);
