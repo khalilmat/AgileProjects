@@ -11,7 +11,7 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { projects } = this.props;
+    const { projects } = this.props.project;
 
     return (
       <div className="projects">
@@ -35,16 +35,13 @@ class Dashboard extends Component {
   }
 }
 
-//wire project to Dashbaord
 Dashboard.propTypes = {
   project: PropTypes.object.isRequired,
   getProjects: PropTypes.func.isRequired,
 };
 
-//map state to props to wire project
 const mapStateToProps = (state) => ({
   project: state.project,
 });
 
-//get Projects when loading Dashboard
 export default connect(mapStateToProps, { getProjects })(Dashboard);

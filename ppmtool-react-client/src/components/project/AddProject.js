@@ -21,7 +21,7 @@ class AddProject extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  //life Cycle hooks: Used to set up props with new errors if error state changes
+  //life cycle hooks
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
@@ -41,27 +41,14 @@ class AddProject extends Component {
       start_date: this.state.start_date,
       end_date: this.state.end_date,
     };
-
     this.props.createProject(newProject, this.props.history);
   }
 
   render() {
-    //destructure errors
     const { errors } = this.state;
 
     return (
       <div>
-        {
-          //check name attribute input fields
-          //create constructor
-          //set state
-          //set value on input fields
-          //create onChange function
-          //set onChange on each input field
-          //bind on constructor
-          //check state change in the react extension
-        }
-
         <div className="project">
           <div className="container">
             <div className="row">
@@ -103,7 +90,6 @@ class AddProject extends Component {
                       </div>
                     )}
                   </div>
-
                   <div className="form-group">
                     <textarea
                       className={classnames("form-control form-control-lg", {
@@ -155,17 +141,13 @@ class AddProject extends Component {
   }
 }
 
-//Add createProject and errors to propTypes and make them required
 AddProject.propTypes = {
   createProject: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
 };
 
-//create new constant to map state to props an extract errors
 const mapStateToProps = (state) => ({
   errors: state.errors,
 });
 
-//Don't forget to map state to props when connecting to the app
-//if you leave out mapStateToProps no erros will be displayed
 export default connect(mapStateToProps, { createProject })(AddProject);
