@@ -18,6 +18,6 @@ export const getProjects = () => async (dispatch) => {
   const res = await axios.get("http://localhost:8080/api/project/all");
   dispatch({
     type: GET_PROJECTS,
-    payload: res.data, //Payload to be passed to the reducer
+    payload: res.data,
   });
 };
